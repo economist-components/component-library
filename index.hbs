@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
+    <meta name="X-UA-Compatible" content="IE=edge,chrome=1">
+    {{#if devpack-doc.base}}
+    <base href="{{devpack-doc.base}}"/>
+    {{/if}}
+    {{#each devpack-doc.css}}
+      {{#if this.contents}}
+        <style>{{{this.contents}}}</style>
+      {{else}}
+        <link rel="stylesheet" href="{{this}}"/>
+      {{/if}}
+    {{/each}}
+  </head>
+  <body>
+    {{#if devpack-doc.demohtml}}
+    <div id="component-preview">
+      {{{devpack-doc.demohtml}}}
+    </div>
+    {{/if}}
+    {{#each devpack-doc.js}}
+      {{#if this.contents}}
+        <script>{{{this.contents}}}</script>
+      {{else}}
+        <script src="{{this}}"></script>
+      {{/if}}
+    {{/each}}
+  </body>
+</html>
