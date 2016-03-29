@@ -1,5 +1,20 @@
-module.exports = function(config) {
-  const localBrowsers = ['Chrome'];
+const packageJson = require('./package.json');
+const path = require('path');
+const browserifyIstanbul = require('browserify-istanbul');
+const isparta = require('isparta');
+const oneSecondInMilliseconds = 1000;
+const oneMinuteInSeconds = 60;
+const twoMinutesInMilliseconds = oneSecondInMilliseconds * oneMinuteInSeconds * 2;
+function configureBuildValue() {
+  if (process.env.GO_PIPELINE_NAME && process.env.GO_PIPELINE_LABEL) {
+    return `${ process.env.GO_PIPELINE_NAME }-${ process.env.GO_PIPELINE_LABEL }`;
+  }
+  return `localbuild-${ new Date().toJSON() }`;
+}
+module.exports = function configureKarma(config) {
+  const localBrowsers = [
+    'PhantomJS',
+  ];
   const sauceLabsBrowsers = {
     SauceChromeLatest: {
       base: 'SauceLabs',
@@ -21,10 +36,6 @@ module.exports = function(config) {
       base: 'SauceLabs',
       browserName: 'MicrosoftEdge',
     },
-    SauceIphoneLatest: {
-      base: 'SauceLabs',
-      browserName: 'iPad',
-    },
     SauceAndroidLatest: {
       base: 'SauceLabs',
       browserName: 'Android',
@@ -33,43 +44,56 @@ module.exports = function(config) {
   config.set({
     basePath: '',
     browsers: localBrowsers,
-    logLevel: config.LOG_DEBUG,
-    frameworks: ['mocha', 'chai'],
+    logLevel: config.LOG_INFO,
+    frameworks: [ 'browserify', 'mocha' ],
     files: [
-      require.resolve('chai-spies/chai-spies'),
-      require.resolve('chai-things/lib/chai-things'),
-      'testbundle.js'
+      path.join(packageJson.directories.test, '*.js'),
     ],
     exclude: [],
-    preprocessors: {},
-    reporters: ['progress'],
+    preprocessors: {
+      [path.join(packageJson.directories.test, '*.js')]: [ 'browserify' ],
+    },
+    reporters: [ 'mocha', 'coverage' ],
     port: 9876,
     colors: true,
     concurrency: 3,
-    logLevel: config.LOG_INFO,
     autoWatch: false,
-    captureTimeout: 1000 * 60 * 2,
-    browserDisconnectTimeout: 1000 * 60 * 2,
-    browserNoActivityTimeout: 1000 * 60 * 2,
-    singleRun: true
+    captureTimeout: twoMinutesInMilliseconds,
+    browserDisconnectTimeout: twoMinutesInMilliseconds,
+    browserNoActivityTimeout: twoMinutesInMilliseconds,
+    singleRun: true,
+    browserify: {
+      transform: [
+        browserifyIstanbul({
+          instrumenter: isparta,
+          ignore: [ '**/node_modules/**', '**/test/**' ],
+        }),
+        'babelify',
+      ],
+      configure: (bundle) => {
+        bundle.on('prebundle', () => {
+          bundle.external('react/lib/ReactContext');
+          bundle.external('react/lib/ExecutionEnvironment');
+        });
+      },
+    },
+    coverageReporter: {
+      type: 'lcov',
+      dir: 'coverage',
+    },
   });
 
-  if (process.env.SAUCE_ACCESS_KEY) {
+  if (process.env.SAUCE_ACCESS_KEY && process.env.SAUCE_USERNAME) {
     config.reporters.push('saucelabs');
     config.set({
       customLaunchers: sauceLabsBrowsers,
       browsers: Object.keys(sauceLabsBrowsers),
       sauceLabs: {
-        testName: require('./package').name,
+        testName: packageJson.name,
+        recordVideo: true,
         startConnect: true,
-        username: process.env.SAUCE_USERNAME || 'economist',
-        build: (function() {
-          if (process.env.GO_PIPELINE_NAME && process.env.GO_PIPELINE_LABEL) {
-            return process.env.GO_PIPELINE_NAME + '-' + process.env.GO_PIPELINE_LABEL;
-          }
-          return 'localbuild-' + new Date().toJSON();
-        })()
-      }
+        build: configureBuildValue(),
+      },
     });
   }
 };

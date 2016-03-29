@@ -1,0 +1,29 @@
+@import './';
+@import '@economist/component-icon/lib/index.css';
+@import '@economist/component-icon/lib/example.css';
+@import '@economist/component-palette';
+@import '@economist/component-palette/example.css';
+@import '@economist/component-grid/example.css';
+@import '@economist/component-typography/index.css';
+@import '@economist/component-navigation/lib/example.css';
+@import '@economist/component-teaser/example.css';
+@import '@economist/component-teaser-list/example.css';
+@import '@economist/component-footer/index.css';
+@import '@economist/component-cookie-message/index.css';
+@import '@economist/component-ad-panel/index.css';
+@import '@economist/component-header/lib/index.css';
+@import '@economist/component-header/lib/settings.css';
+@import '@economist/component-header/lib/blogCustomisation.css';
+@import '@economist/component-subscribe-message/lib/index.css';
+@import '@economist/component-link-button/lib/index.css';
+@import '@economist/component-balloon/lib/index.css';
+@import '@economist/component-balloon/lib/example.css';
+@import '@economist/component-accordion/lib/index.css';
+@import '@economist/component-accordion/lib/styles.css';
+@import '@economist/component-sections-card/lib/index.css';
+/* stylelint-disable selector-no-type, declaration-no-important */
+
+body {
+  max-width: none !important;
+}
+/* stylelint-enable selector-no-type, declaration-no-important */
