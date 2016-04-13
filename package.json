@@ -122,7 +122,7 @@
     "@economist/component-typography": "*",
     "babel-polyfill": "^6.7.4",
     "react": "^0.14.8",
-    "react-i13n": "^2.0.6",
+    "react-i13n": "^2.0.12",
     "svg4everybody": "^2.0.0"
   },
   "devDependencies": {
