@@ -150,7 +150,7 @@
     "karma-browserify": "^5.0.5",
     "karma-coverage": "^0.5.5",
     "karma-mocha": "^1.0.1",
-    "karma-mocha-reporter": "^2.0.2",
+    "karma-mocha-reporter": "^2.0.3",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-sauce-launcher": "^0.3.1",
     "live-server": "^1.0.0",
