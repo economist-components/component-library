@@ -121,7 +121,7 @@
     "@economist/component-teaser-list": "*",
     "@economist/component-typography": "*",
     "babel-polyfill": "^6.8.0",
-    "react": "^0.14.8",
+    "react": "^15.0.1",
     "react-i13n": "^2.0.12",
     "svg4everybody": "^2.0.0"
   },
