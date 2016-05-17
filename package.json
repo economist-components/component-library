@@ -120,7 +120,7 @@
     "@economist/component-teaser": "*",
     "@economist/component-teaser-list": "*",
     "@economist/component-typography": "*",
-    "babel-polyfill": "^6.8.0",
+    "babel-polyfill": "^6.9.0",
     "react": "^0.14.8",
     "react-i13n": "^2.0.12",
     "svg4everybody": "^2.0.0"
